@@ -1,0 +1,20 @@
+# Weather Data Pipeline Configuration
+
+data:
+  output_dir: "data/"
+
+log:
+  logs_dir: "logs/"
+  logs_filename: "logs.log"
+  level: "INFO"
+
+api:
+  base_url: "https://api.openweathermap.org/data/2.5/weather"
+  timeout: 10
+
+cities:
+  - Warsaw
+  - Gdansk
+  - Krakow
+  - Katowice
+  - Szczecin
