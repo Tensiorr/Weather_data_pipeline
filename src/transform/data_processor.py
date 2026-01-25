@@ -14,16 +14,17 @@ def kelvin_to_celsius(kelvin: float) -> float:
     """
     return kelvin - 273.15
 
-def timestamp_to_datetime(timestamp: int) -> str:
+
+def timestamp_to_datetime(timestamp: int) -> datetime:
     """Convert Unix timestamp to readable datetime string.
 
     Args:
         timestamp: Unix timestamp
 
     Returns:
-        str: Formatted timestamp
+        datetime: Datetime object
     """
-    return datetime.fromtimestamp(timestamp).strftime("%d-%m-%Y %H:%M:%S")
+    return datetime.fromtimestamp(timestamp)
 
 
 def safe_get(data: dict, *keys, default: Any = None) -> Any:
@@ -54,6 +55,7 @@ def safe_get(data: dict, *keys, default: Any = None) -> Any:
             logger.debug("Key '%s' not found in path %s", key, keys)
             return default
     return current
+
 
 def transform_weather_data(raw_data: dict) -> dict:
     """
