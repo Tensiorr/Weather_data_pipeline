@@ -3,7 +3,7 @@ import logging
 import requests
 from typing import Optional
 from dotenv import load_dotenv
-from config import load_config
+from ..config import load_config
 
 
 load_dotenv()

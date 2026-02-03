@@ -3,6 +3,9 @@
 data:
   output_dir: "data/"
 
+database:
+  table_name: "weather_measurements"
+
 log:
   logs_dir: "logs/"
   logs_filename: "logs.log"

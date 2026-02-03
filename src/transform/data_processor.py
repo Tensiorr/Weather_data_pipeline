@@ -7,11 +7,17 @@ def kelvin_to_celsius(kelvin: float) -> float:
     """Converter Kelvin to Celsius
 
     Args:
-        kelvin: Temperature in Kelvin
+        kelvin: Temperature in Kelvin (must be >= 0)
 
     Returns:
         float: Temperature in Celsius
+
+    Raises:
+        TypeError: If kelvin is not numeric
+        ValueError: If temperature is negative (physically impossible)
     """
+    if kelvin < 0:
+        raise ValueError(f"Temperature cannot be negative in Kelvin: {kelvin}K")
     return kelvin - 273.15
 
 
@@ -74,8 +80,13 @@ def transform_weather_data(raw_data: dict) -> dict:
         logger.error("Missing city name in data")
         return None
 
-    temp = safe_get(raw_data, 'main', 'temp')
     measurement_time = safe_get(raw_data, 'dt')
+
+    if not measurement_time:
+        logger.error("Missing measurement time for %s", city)
+        return None
+
+    temp = safe_get(raw_data, 'main', 'temp')
     humidity = safe_get(raw_data, 'main', 'humidity')
     pressure = safe_get(raw_data, 'main', 'pressure')
     wind_speed = safe_get(raw_data, 'wind', 'speed')
@@ -86,7 +97,7 @@ def transform_weather_data(raw_data: dict) -> dict:
     result_dict = {
         "city": city,
         "temperature_celsius": kelvin_to_celsius(temp) if temp is not None else None,
-        "measurement_time": timestamp_to_datetime(measurement_time) if measurement_time is not None else None,
+        "measurement_time": timestamp_to_datetime(measurement_time),
         "humidity": humidity if humidity is not None else None,
         "pressure": pressure if pressure is not None else None,
         "wind_speed": wind_speed if wind_speed is not None else None

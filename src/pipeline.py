@@ -1,10 +1,10 @@
 import logging
 
-from extract.weather_api import WeatherAPI
-from transform.data_processor import transform_weather_data
-from load.db_loader import save_to_database
-from config import load_config
-from utils.logger import setup_logging
+from .extract.weather_api import WeatherAPI
+from .transform.data_processor import transform_weather_data
+from .load.db_loader import save_to_database
+from .config import load_config
+from .utils.logger import setup_logging
 
 config = load_config()
 setup_logging()
