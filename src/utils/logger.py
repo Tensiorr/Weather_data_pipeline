@@ -1,5 +1,5 @@
 import logging
-from config import load_config
+from ..config import load_config
 from pathlib import Path
 
 

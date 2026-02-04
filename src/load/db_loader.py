@@ -58,7 +58,6 @@ def save_to_database(data: list[dict]) -> None:
             duplicate_count += 1
             continue
 
-    dbconnect.commit()
     cursor.close()
     dbconnect.close()
     logger.info("Inserted %d records, %d duplicates", inserted_count, duplicate_count)

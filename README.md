@@ -76,3 +76,12 @@ That's it! The pipeline will:
 - ✅ Store data with duplicate detection
 
 ---
+
+## Running Tests
+```bash
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage report
+pytest --cov=src tests/ --cov-report=html
+```
