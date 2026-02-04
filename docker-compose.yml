@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:18
+    container_name: weather_db
+    environment:
+      POSTGRES_DB: weather_data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: weather_pipeline
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      OPENWEATHER_API_KEY: ${OPENWEATHER_API_KEY}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: weather_data
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+
+volumes:
+  postgres_data:
