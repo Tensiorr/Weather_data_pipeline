@@ -5,8 +5,8 @@ from typing import Optional
 from dotenv import load_dotenv
 from ..config import load_config
 
-
 load_dotenv()
+
 
 class WeatherAPI:
     """
@@ -17,6 +17,7 @@ class WeatherAPI:
         base_url: API endpoint URL
         timeout: Request timeout in seconds
     """
+
     def __init__(self, config: Optional[dict] = None):
         """
         Initialize WeatherAPI client.
@@ -33,7 +34,7 @@ class WeatherAPI:
         self.logger = logging.getLogger(__name__)
         self.api_key = os.getenv("OPENWEATHER_API_KEY")
         self.base_url = config["api"]["base_url"]
-        self.timeout = config['api']['timeout']
+        self.timeout = config["api"]["timeout"]
         if not self.api_key:
             raise Exception("OPENWEATHER_API_KEY not found in .env file.")
 
@@ -55,11 +56,10 @@ class WeatherAPI:
         for city in cities:
             self.logger.info("Starting request for %s", city)
             try:
-                params = {
-                    'q': city,
-                    'appid': self.api_key
-                }
-                response = requests.get(self.base_url, params=params, timeout=self.timeout)
+                params = {"q": city, "appid": self.api_key}
+                response = requests.get(
+                    self.base_url, params=params, timeout=self.timeout
+                )
 
                 if response.status_code != 200:
                     self.logger.error("Error %s for %s.", response.status_code, city)

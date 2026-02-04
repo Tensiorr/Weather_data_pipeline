@@ -53,8 +53,12 @@ def safe_get(data: dict, *keys, default: Any = None) -> Any:
     current = data
     for key in keys:
         if not isinstance(current, dict):
-            logger.debug("Cannot traverse - current is %s, not dict (key=%s, path=%s)",
-                         type(current).__name__, key, keys)
+            logger.debug(
+                "Cannot traverse - current is %s, not dict (key=%s, path=%s)",
+                type(current).__name__,
+                key,
+                keys,
+            )
             return default
         current = current.get(key)
         if current is None:
@@ -74,24 +78,30 @@ def transform_weather_data(raw_data: dict) -> dict:
         dict: Cleaned and transformed data, or None if city name is missing
     """
     logger = logging.getLogger(__name__)
-    city = safe_get(raw_data, 'name')
+    city = safe_get(raw_data, "name")
 
     if not city:
         logger.error("Missing city name in data")
         return None
 
-    measurement_time = safe_get(raw_data, 'dt')
+    measurement_time = safe_get(raw_data, "dt")
 
     if not measurement_time:
         logger.error("Missing measurement time for %s", city)
         return None
 
-    temp = safe_get(raw_data, 'main', 'temp')
-    humidity = safe_get(raw_data, 'main', 'humidity')
-    pressure = safe_get(raw_data, 'main', 'pressure')
-    wind_speed = safe_get(raw_data, 'wind', 'speed')
+    temp = safe_get(raw_data, "main", "temp")
+    humidity = safe_get(raw_data, "main", "humidity")
+    pressure = safe_get(raw_data, "main", "pressure")
+    wind_speed = safe_get(raw_data, "wind", "speed")
 
-    if temp is None or measurement_time is None or humidity is None or pressure is None or wind_speed is None:
+    if (
+        temp is None
+        or measurement_time is None
+        or humidity is None
+        or pressure is None
+        or wind_speed is None
+    ):
         logger.warning("Incomplete data for %s", city)
 
     result_dict = {
@@ -100,7 +110,7 @@ def transform_weather_data(raw_data: dict) -> dict:
         "measurement_time": timestamp_to_datetime(measurement_time),
         "humidity": humidity if humidity is not None else None,
         "pressure": pressure if pressure is not None else None,
-        "wind_speed": wind_speed if wind_speed is not None else None
+        "wind_speed": wind_speed if wind_speed is not None else None,
     }
 
     return result_dict

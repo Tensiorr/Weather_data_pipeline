@@ -5,7 +5,9 @@ from typing import Optional
 import logging
 
 
-def save_to_csv(data: list[dict], output_dir: str = "data/", filename: Optional[str] = None) -> None:
+def save_to_csv(
+    data: list[dict], output_dir: str = "data/", filename: Optional[str] = None
+) -> None:
     """
     Save transformed weather data to CSV file.
 
@@ -37,7 +39,7 @@ def save_to_csv(data: list[dict], output_dir: str = "data/", filename: Optional[
         logger.warning("Skipped %d invalid records", len(data) - len(clean_data))
 
     try:
-        with open(filepath, "w", newline='', encoding="utf-8") as f:
+        with open(filepath, "w", newline="", encoding="utf-8") as f:
             fieldnames = clean_data[0].keys() if clean_data else []
             writer = csv.DictWriter(f, fieldnames=fieldnames)
 

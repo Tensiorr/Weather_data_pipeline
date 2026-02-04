@@ -1,0 +1,11 @@
+FROM apache/airflow:2.8.0-python3.11
+
+USER root
+
+COPY src/ /opt/airflow/src/
+COPY config/ /opt/airflow/config/
+COPY requirements.txt /opt/airflow/
+
+USER airflow
+
+RUN pip install --no-cache-dir -r /opt/airflow/requirements.txt

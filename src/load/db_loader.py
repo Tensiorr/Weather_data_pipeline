@@ -1,7 +1,6 @@
 import os
 import logging
 import psycopg2
-from typing import Optional
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,11 +9,11 @@ load_dotenv()
 def get_db_connection():
     """Create database connection."""
     return psycopg2.connect(
-        host=os.getenv('DB_HOST'),
-        port=os.getenv('DB_PORT'),
-        database=os.getenv('DB_NAME'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD')
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT"),
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
     )
 
 
@@ -50,8 +49,16 @@ def save_to_database(data: list[dict]) -> None:
     for record in clean_data:
         try:
             cursor.execute(
-            sql,
-            (record["city"], record["temperature_celsius"], record["measurement_time"], record["humidity"], record["pressure"], record["wind_speed"]))
+                sql,
+                (
+                    record["city"],
+                    record["temperature_celsius"],
+                    record["measurement_time"],
+                    record["humidity"],
+                    record["pressure"],
+                    record["wind_speed"],
+                ),
+            )
             inserted_count += 1
         except psycopg2.IntegrityError:
             logger.debug("Duplicated record")
