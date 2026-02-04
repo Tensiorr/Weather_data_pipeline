@@ -4,6 +4,7 @@ venv/
 __pycache__/
 data/*.csv
 logs/*.log
+logs/*/latest
 *.log
 .idea/
 .pytest_cache/

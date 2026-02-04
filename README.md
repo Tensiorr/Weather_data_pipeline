@@ -11,12 +11,28 @@ ETL pipeline for fetching and processing weather data from OpenWeatherMap API.
 
 ## Features
 
-- Fetches weather data for multiple cities
-- Transforms data (Kelvin to Celsius, Unix timestamps)
-- PostgreSQL storage with proper schema design
-- Production-quality logging and error handling
+**Data Pipeline:**
+- Fetches real-time weather data from OpenWeatherMap API
+- Transforms data (Kelvin to Celsius, Unix timestamps to datetime)
+- PostgreSQL storage with composite primary keys for duplicate prevention
+- Production-quality logging and comprehensive error handling
+
+**Orchestration (Airflow):**
+- Automated scheduling - pipeline runs hourly
+- Modular DAG with separate Extract, Transform, Load tasks
+- Task monitoring and retry mechanisms
+- Web UI for pipeline management and monitoring
+
+**Dashboard:**
+- Interactive Streamlit dashboard for data visualization
+- Real-time metrics: average temperature, hottest city tracking
+- Temperature trends with multi-city filtering
+- City comparison charts (temperature, humidity)
+
+**Development:**
 - Comprehensive test suite (17 unit tests with mocking)
 - Fully Dockerized - runs with single command
+- YAML-based configuration management
 
 
 ---
@@ -31,6 +47,7 @@ ETL pipeline for fetching and processing weather data from OpenWeatherMap API.
 ├── tests/            # Unit tests with pytest
 ├── config/           # Configuration (cities list, API settings)
 ├── sql/              # Database schema
+├── dashboard/        # Dashboard setup
 └── docker-compose.yml
 ```
 
@@ -42,6 +59,13 @@ ETL pipeline for fetching and processing weather data from OpenWeatherMap API.
 - pytest (testing)
 - psycopg2 (database connection)
 
+## Dashboard Preview
+
+![Current Weather](screenshots/Current_Weather.png)
+
+![Temperature Trends](screenshots/Temperature_Trends.png)
+
+![City Comparison](screenshots/City_Comparison.png)
 ---
 
 ## Quick Start
@@ -85,3 +109,20 @@ pytest tests/ -v
 # Run with coverage report
 pytest --cov=src tests/ --cov-report=html
 ```
+
+## Airflow Scheduler
+
+The pipeline runs automatically every hour via Apache Airflow.
+
+**Access Airflow UI:**
+```bash
+# After running docker-compose up
+Open http://localhost:8080
+Login: admin / admin
+```
+
+**Monitor DAG:**
+- View task status (Extract → Transform → Load)
+- Check logs for each task
+- Manually trigger runs
+- See execution history
