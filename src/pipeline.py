@@ -51,8 +51,8 @@ def transform_data_impl(raw_data: List[Dict]) -> List[Optional[Dict]]:
 
 def transform_data(**context):
     """Airflow wrapper for transform."""
-    ti = context['ti']
-    raw_data = ti.xcom_pull(task_ids='extract_weather_data')
+    ti = context["ti"]
+    raw_data = ti.xcom_pull(task_ids="extract_weather_data")
     return transform_data_impl(raw_data)
 
 
@@ -73,8 +73,8 @@ def load_data_impl(clean_data: List[Dict]) -> None:
 
 def load_data(**context):
     """Airflow wrapper for load."""
-    ti = context['ti']
-    clean_data = ti.xcom_pull(task_ids='transform_weather_data')
+    ti = context["ti"]
+    clean_data = ti.xcom_pull(task_ids="transform_weather_data")
     return load_data_impl(clean_data)
 
 

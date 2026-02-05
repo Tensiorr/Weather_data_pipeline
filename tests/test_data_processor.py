@@ -1,5 +1,9 @@
 import pytest
-from src.transform.data_processor import kelvin_to_celsius, safe_get, transform_weather_data
+from src.transform.data_processor import (
+    kelvin_to_celsius,
+    safe_get,
+    transform_weather_data,
+)
 from datetime import datetime
 
 
@@ -35,65 +39,65 @@ def test_kelvin_to_celsius_with_string():
 
 def test_safe_get_simple_key():
     """Test getting a simple key."""
-    data = {'city': 'Warsaw', 'temp': 15.5}
-    result = safe_get(data, 'city')
-    assert result == 'Warsaw'
+    data = {"city": "Warsaw", "temp": 15.5}
+    result = safe_get(data, "city")
+    assert result == "Warsaw"
 
 
 def test_safe_get_nested_key():
     """Test getting nested keys."""
-    data = {'main': {'temp': 273.15, 'humidity': 85}}
-    result = safe_get(data, 'main', 'temp')
+    data = {"main": {"temp": 273.15, "humidity": 85}}
+    result = safe_get(data, "main", "temp")
     assert result == 273.15
 
 
 def test_safe_get_wrong_key():
     """Test with wrong key."""
-    data = {'city': 'Warsaw', 'temp': 15.5}
-    result = safe_get(data, 'test')
+    data = {"city": "Warsaw", "temp": 15.5}
+    result = safe_get(data, "test")
     assert result is None
 
 
 def test_safe_get_wrong_first_key():
     """Test with wrong first key."""
-    data = {'main': {'temp': 273.15, 'humidity': 85}}
-    result = safe_get(data, 'test', 'temp')
+    data = {"main": {"temp": 273.15, "humidity": 85}}
+    result = safe_get(data, "test", "temp")
     assert result is None
 
 
 def test_safe_get_wrong_nested_key():
     """Test with wrong nested key."""
-    data = {'main': {'temp': 273.15, 'humidity': 85}}
-    result = safe_get(data, 'main', 'test')
+    data = {"main": {"temp": 273.15, "humidity": 85}}
+    result = safe_get(data, "main", "test")
     assert result is None
 
 
 def test_safe_get_non_dict_value():
     """Test when intermediate value is not a dict."""
-    data = {'main': 'not_a_dict'}
-    result = safe_get(data, 'main', 'temp')
+    data = {"main": "not_a_dict"}
+    result = safe_get(data, "main", "temp")
     assert result is None
 
 
 def test_safe_get_custom_default():
     """Test with custom default value."""
-    data = {'city': 'Warsaw'}
-    result = safe_get(data, 'temp', default=0)
+    data = {"city": "Warsaw"}
+    result = safe_get(data, "temp", default=0)
     assert result == 0
 
 
 def test_transform_weather_data_correct_dict():
     raw_data = {
-        'name': 'Warsaw',
-        'main': {'temp': 273.15, 'humidity': 85, 'pressure': 1013},
-        'dt': 1706216400,
-        'wind': {'speed': 5.5}
+        "name": "Warsaw",
+        "main": {"temp": 273.15, "humidity": 85, "pressure": 1013},
+        "dt": 1706216400,
+        "wind": {"speed": 5.5},
     }
 
     expected_dt = datetime.fromtimestamp(1706216400)
 
     result = transform_weather_data(raw_data)
-    assert result["city"] == 'Warsaw'
+    assert result["city"] == "Warsaw"
     assert result["temperature_celsius"] == 0.0
     assert result["measurement_time"] == expected_dt
     assert result["humidity"] == 85
@@ -103,10 +107,7 @@ def test_transform_weather_data_correct_dict():
 
 def test_transform_weather_data_missing_city():
     """Should return None if city name is missing."""
-    raw_data = {
-        'main': {'temp': 273.15},
-        'dt': 1706216400
-    }
+    raw_data = {"main": {"temp": 273.15}, "dt": 1706216400}
 
     result = transform_weather_data(raw_data)
     assert result is None
@@ -115,7 +116,7 @@ def test_transform_weather_data_missing_city():
 def test_transform_weather_data_missing_timestamp():
     """Should return None if timestamp is missing."""
     raw_data = {
-        'name': 'Warsaw',
+        "name": "Warsaw",
     }
 
     result = transform_weather_data(raw_data)
@@ -124,16 +125,12 @@ def test_transform_weather_data_missing_timestamp():
 
 def test_transform_weather_data_partial_data():
     """Should handle missing fields gracefully."""
-    raw_data = {
-        'name': 'Warsaw',
-        'main': {'temp': 273.15},
-        'dt': 1706216400
-    }
+    raw_data = {"name": "Warsaw", "main": {"temp": 273.15}, "dt": 1706216400}
 
     expected_dt = datetime.fromtimestamp(1706216400)
 
     result = transform_weather_data(raw_data)
-    assert result["city"] == 'Warsaw'
+    assert result["city"] == "Warsaw"
     assert result["temperature_celsius"] == 0.0
     assert result["measurement_time"] == expected_dt
     assert result["humidity"] is None
