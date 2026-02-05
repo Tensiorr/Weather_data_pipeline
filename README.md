@@ -48,6 +48,7 @@ ETL pipeline for fetching and processing weather data from OpenWeatherMap API.
 ├── config/           # Configuration (cities list, API settings)
 ├── sql/              # Database schema
 ├── dashboard/        # Dashboard setup
+├── dags/             # DAGS setup and scenarios
 └── docker-compose.yml
 ```
 
